@@ -12,6 +12,7 @@ public class Fade : MonoBehaviour {
 
 	Image m_image;
 	bool fading = false;
+	public bool Fading {get{return fading;}}
 	float fadingCurrentTime;
 
 	void Awake () {
