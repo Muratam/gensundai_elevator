@@ -63,7 +63,7 @@ static class Scenario{
 				"東京スカイツリーの高さは常識やろ？",
 				"そういうことで、そこまでよろしくやで",
 			};
-			targetText = "東京スカイツリーのてっぺん";
+			targetText = "スカイツリー最上階";
 			return;
 		case 4:	
 			targetFloor = 944; //3776m := 944 :470px

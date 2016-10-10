@@ -14,7 +14,7 @@ public class MainSceneManager : MonoBehaviour {
 	[SerializeField] GameObject doorOpen;
 	int readCount = 0;
 	string[] scripts;
-
+	bool once = false;
 	void Start () {
 		fade.StartFade();
 		scripts = Scenario.Script;
@@ -22,6 +22,8 @@ public class MainSceneManager : MonoBehaviour {
 	}
 
 	void Update () {
+		if (once)
+			return; 
 		if (Input.GetMouseButtonDown (0)) {
 			if (readCount < scripts.Length)
 				serifText.text = scripts [readCount++];
@@ -33,6 +35,7 @@ public class MainSceneManager : MonoBehaviour {
 					SceneManager.LoadScene("landScape");
 				});
 				uiGuideAnim.SetTrigger ("Exit");
+				once = true;
 			}
 		}
 	}

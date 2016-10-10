@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking.Types;
 
 public class Elevator : MonoBehaviour {
 
@@ -38,7 +39,11 @@ public class Elevator : MonoBehaviour {
 
 	bool attrived = false;
 	void Update () {
+		if (transform.position.y < -10000000f) {
+			Application.OpenURL ("http://twitter.com/intent/tweet?text=" + WWW.EscapeURL("私は宇宙のもくずとなりました #gensundaielevator"));
+		}
 		if (attrived) {
+			//if(m_camera.orthographicSize >= 5)m_camera.orthographicSize *= 0.9f;
 			var rb = this.gameObject.GetComponent<Rigidbody2D> ();
 			if (rb == null) return;
 			if (transform.position.y < -50f) {
@@ -66,20 +71,23 @@ public class Elevator : MonoBehaviour {
 			if (Scenario.targetFloor * Scenario.allowRange <= floor && floor <= Scenario.targetFloor / Scenario.allowRange ){
 				ResultText.color = new Color (1,1,0.7f,1);
 				ResultText.text = new string[]{ "神!!", "いいぞー", "よさ", "(^^)" }.ElementAt (UnityEngine.Random.Range (0, 4));
+				var submit = Scenario.targetText;
 				if (Scenario.SceneId < Scenario.SceneMaxId) {
-					Scenario.SceneId++;
 					NextStageButton.GetComponentInChildren<Text> ().text = "次の\nステージへ";
+					Scenario.SceneId++;
 					TweetButton.onClick.AddListener (()=>{
-						Application.OpenURL("http://twitter.com/intent/tweet?text=" + WWW.EscapeURL(
-							"エレベーターで" + Scenario.targetText + "に行けた！！ #gensundaielevator"
-						));
+						var message = "http://twitter.com/intent/tweet?text=" + WWW.EscapeURL(
+							"エレベーターで" + submit + "に行けた！！ #gensundaielevator"
+						);
+						Application.ExternalEval("window.open('" + message + "','','width=500,height=400');");
 					});
 				}else {
 					NextStageButton.GetComponentInChildren<Text> ().text = "最初から\nやり直す";
 					TweetButton.onClick.AddListener (()=>{
-						Application.OpenURL("http://twitter.com/intent/tweet?text=" + WWW.EscapeURL(
-							"エレベーターで" + Scenario.targetText + "に行った！！ #gensundaielevator"
-						));
+						var message = "http://twitter.com/intent/tweet?text=" + WWW.EscapeURL(
+							"エレベーターで" + submit + "に行った！！ #gensundaielevator"
+						);
+						Application.ExternalEval("window.open('" + message + "','','width=500,height=400');");
 					});
 					Scenario.SceneId = 0;
 				}
@@ -93,9 +101,10 @@ public class Elevator : MonoBehaviour {
 					"Miss...";
 				NextStageButton.GetComponentInChildren<Text> ().text = "リトライ";
 				TweetButton.onClick.AddListener (()=>{
-					Application.OpenURL("http://twitter.com/intent/tweet?text=" + WWW.EscapeURL(
+					var message = "http://twitter.com/intent/tweet?text=" + WWW.EscapeURL(
 						"エレベーターで" + Scenario.targetText + "に行くのに失敗した… #gensundaielevator"
-					));
+					);
+					Application.ExternalEval("window.open('" + message + "','','width=500,height=400');");
 				});
 				var rb = this.gameObject.AddComponent<Rigidbody2D> ();
 				rb.gravityScale = suc * 0.3f;
