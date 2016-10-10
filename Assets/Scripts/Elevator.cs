@@ -38,10 +38,8 @@ public class Elevator : MonoBehaviour {
 
 
 	bool attrived = false;
+	bool mokuzued = false;
 	void Update () {
-		if (transform.position.y < -10000000f) {
-			Application.OpenURL ("http://twitter.com/intent/tweet?text=" + WWW.EscapeURL("私は宇宙のもくずとなりました #gensundaielevator"));
-		}
 		if (attrived) {
 			//if(m_camera.orthographicSize >= 5)m_camera.orthographicSize *= 0.9f;
 			var rb = this.gameObject.GetComponent<Rigidbody2D> ();
@@ -54,6 +52,11 @@ public class Elevator : MonoBehaviour {
 		}
 		long floor = (transform.position.y < -2) ? 1 :
 			(long)(transform.position.y + 2f) + 2;
+		if (!mokuzued &&floor < -1000000) {
+			mokuzued = true;
+			Application.OpenURL ("http://twitter.com/intent/tweet?text=" + WWW.EscapeURL("私は宇宙のもくずとなりました #gensundaielevator"));
+			return;
+		}
 		if (!Input.GetMouseButtonDown (0)) {
 			suc *= 1.01f;
 			transform.position = new Vector3 (0, suc - 4.29f, -10);
